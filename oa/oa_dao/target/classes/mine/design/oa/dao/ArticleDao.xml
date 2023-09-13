@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mine.design.oa.dao.ArticleDao">
+
+    <resultMap id="article" type="Article">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="article_sn" column="article_sn" javaType="String"/>
+        <result property="article_tltle" column="article_tltle" javaType="String"/>
+        <result property="article_content" column="article_content" javaType="String"/>
+        <result property="article_link" column="article_link" javaType="String"/>
+        <result property="article_time" column="article_time" javaType="java.util.Date"/>
+        <association property="creater" column="article_sn" javaType="Employee">
+            <result property="name" column="cname" javaType="String"/>
+            <result property="post" column="cpost" javaType="String"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Idea">
+        insert into article(article_sn,article_tltle,article_content,article_link,article_time)
+        values (#{article_sn},#{article_tltle},#{article_content},#{article_link},#{article_time})
+    </insert>
+
+    <select id="selectAll" resultMap="article">
+        select a.*,ce.sn csn,ce.name cname,ce.post cpost
+        from article a
+        left join employee ce on ce.sn=a.article_sn
+    </select>
+
+
+
+
+</mapper>

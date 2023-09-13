@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mine.design.oa.dao.GoodDao">
+
+    <resultMap id="good" type="Good">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="sn" column="sn" javaType="String"/>
+        <result property="name" column="name" javaType="String"/>
+        <result property="post" column="post" javaType="String"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="good">
+        select * from good
+    </select>
+
+
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mine.design.oa.dao.ReportDao">
+    <resultMap id="report" type="Report">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="sn" column="sn" javaType="String"/>
+        <result property="content" column="content" javaType="String"/>
+        <result property="report_time" column="report_time" javaType="java.util.Date"/>
+        <result property="continue_time" column="continue_time" javaType="String"/>
+        <association property="creater" column="sn" javaType="Employee">
+            <result property="name" column="cname" javaType="String"/>
+            <result property="post" column="cpost" javaType="String"/>
+        </association>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Report">
+        insert into report(id,sn,content,report_time,continue_time)
+        values (#{id},#{sn},#{content},#{report_time},#{continue_time})
+    </insert>
+
+    <select id="selectAll" resultMap="report">
+        select r.*,ce.sn csn,ce.name cname,ce.post cpost
+        from report r
+        left join employee ce on ce.sn=r.sn
+    </select>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mine.design.oa.dao.IdeaDao">
+
+    <resultMap id="idea" type="Idea">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="idea_sn" column="idea_sn" javaType="String"/>
+        <result property="idea_title" column="idea_title" javaType="String"/>
+        <result property="idea_content" column="idea_content" javaType="String"/>
+        <result property="idea_time" column="idea_time" javaType="java.util.Date"/>
+        <association property="creater" column="idea_sn" javaType="Employee">
+            <result property="name" column="cname" javaType="String"/>
+            <result property="post" column="cpost" javaType="String"/>
+        </association>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Idea">
+        insert into idea(idea_sn,idea_title,idea_content,idea_time)
+        values (#{idea_sn},#{idea_title},#{idea_content},#{idea_time})
+    </insert>
+
+    <select id="selectAll" resultMap="idea">
+        select i.*,ce.sn csn,ce.name cname,ce.post cpost
+        from idea i
+        left join employee ce on ce.sn=i.idea_sn
+    </select>
+
+
+
+
+
+
+
+</mapper>

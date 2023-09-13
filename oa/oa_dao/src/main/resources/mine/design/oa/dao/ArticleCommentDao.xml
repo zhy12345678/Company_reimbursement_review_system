@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mine.design.oa.dao.ArticleCommentDao">
+
+    <resultMap id="articleComment" type="ArticleComment">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="comment_sn" column="comment_sn" javaType="Integer"/>
+        <result property="commentfolk_sn" column="commentfolk_sn" javaType="String"/>
+        <result property="content" column="content" javaType="String"/>
+        <result property="comment_time" column="comment_time" javaType="java.util.Date"/>
+        <association property="commenter" column="commentfolk_sn" javaType="Employee">
+            <result property="name" column="cname" javaType="String"/>
+            <result property="post" column="cpost" javaType="String"/>
+        </association>
+        <association property="article" column="id" javaType="Article">
+            <result property="article_title" column="aarticle_title" javaType="String"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ArticleComment">
+        insert into article_comment(comment_sn,commentfolk_sn,content,comment_time)
+        values (#{comment_sn},#{commentfolk_sn},#{content},#{comment_time})
+    </insert>
+    <select id="selectById" resultMap="articleComment">
+        select ac.*,ce.sn csn,ce.name cname,ce.post cpost,a.id aaid,a.article_tltle aatt
+        from article_comment ac
+        left join employee ce on ce.sn=ac.commentfolk_sn
+        left join article a on a.id=ac.comment_sn
+        order by ac.comment_time desc
+    </select>
+
+</mapper>

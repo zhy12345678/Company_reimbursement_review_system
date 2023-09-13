@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mine.design.oa.dao.IdeaCommentDao">
+
+    <resultMap id="ideaComment" type="IdeaComment">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="comment_sn" column="comment_sn" javaType="Integer"/>
+        <result property="commentfolk_sn" column="commentfolk_sn" javaType="String"/>
+        <result property="content" column="content" javaType="String"/>
+        <result property="comment_time" column="comment_time" javaType="java.util.Date"/>
+        <association property="commenter" column="commentfolk_sn" javaType="Employee">
+            <result property="name" column="cname" javaType="String"/>
+            <result property="post" column="cpost" javaType="String"/>
+        </association>
+        <association property="idea" column="id" javaType="Idea">
+            <result property="Idea_title" column="iidea_title" javaType="String"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="IdeaComment">
+        insert into idea_comment(comment_sn,commentfolk_sn,content,comment_time)
+        values (#{comment_sn},#{commentfolk_sn},#{content},#{comment_time})
+    </insert>
+    <select id="selectById" resultMap="ideaComment">
+        select ic.*,ce.sn csn,ce.name cname,ce.post cpost,i.idea_sn iisn,i.idea_title iitt
+        from idea_comment ic
+        left join employee ce on ce.sn=ic.commentfolk_sn
+        left join idea i on i.idea_sn=ic.comment_sn
+        order by ic.comment_time desc
+    </select>
+</mapper>
